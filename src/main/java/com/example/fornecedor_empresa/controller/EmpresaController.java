@@ -29,7 +29,7 @@ public class EmpresaController {
         }
     }
 
-    @PostMapping("/{empresaId}/fornecedor/{fornecedorId}")
+    @PostMapping("/{empresaId}/fornecedores/{fornecedorId}")
     public ResponseEntity<EmpresaFornecedor> associarFornecedor(
             @PathVariable Long empresaId,
             @PathVariable Long fornecedorId) {

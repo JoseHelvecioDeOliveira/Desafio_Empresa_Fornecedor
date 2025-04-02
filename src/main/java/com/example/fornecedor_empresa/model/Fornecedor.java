@@ -15,11 +15,14 @@ public class Fornecedor {
     private String nome;
     private String email;
 
-    @Column(unique = true)
+    @Column(unique = true, name = "cnpjcpf")
+
     private String cnpjCpf;
 
     private String cep;
     private String rg;
+
+    @Column(name = "data_nascimento") // Define explicitamente o nome da coluna no banco
     private LocalDate dataNascimento;
 
     @ManyToMany(mappedBy = "fornecedores")

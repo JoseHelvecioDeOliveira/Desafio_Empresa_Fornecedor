@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/fornecedores")
@@ -56,6 +57,15 @@ public class FornecedorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Fornecedor>> buscarFornecedores(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String cnpjCpf) {
+        List<Fornecedor> fornecedores = fornecedorService.searchFornecedores(nome, cnpjCpf);
+        return fornecedores.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(fornecedores);
+    }
+
 
     @PutMapping("/{cnpjCpf}")
     public ResponseEntity<Fornecedor> updateFornecedor(

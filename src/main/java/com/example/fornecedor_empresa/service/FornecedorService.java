@@ -130,6 +130,7 @@ public class FornecedorService {
         }
 
             // Se todas as validações passarem, salva o fornecedor no banco
+
         return fornecedorRepository.save(fornecedor);
     }
 
@@ -147,15 +148,23 @@ public class FornecedorService {
         return empresaFornecedorRepository.save(empresaFornecedor);
     }
 
+    public Optional<Fornecedor> buscarFornecedorPorCnpjCpf(String cnpjCpf) {
+        Optional<Fornecedor> fornecedor = fornecedorRepository.findByCnpjCpf(cnpjCpf);
+        System.out.println("Buscando fornecedor: " + cnpjCpf + " - Encontrado: " + fornecedor.isPresent());
+        return fornecedor;
+    }
+
     public List<Fornecedor> searchFornecedores(String nome, String cnpjCpf) {
         if ((nome == null || nome.isEmpty()) && (cnpjCpf == null || cnpjCpf.isEmpty())) {
-            return fornecedorRepository.findAll(); // Retorna todos se não houver filtro
+            return fornecedorRepository.findAll(); // Retorna todos se nenhum critério for informado
+        } else if (nome != null && !nome.isEmpty() && cnpjCpf != null && !cnpjCpf.isEmpty()) {
+            return fornecedorRepository.findByNomeContainingAndCnpjCpfContaining(nome, cnpjCpf);
         } else if (nome != null && !nome.isEmpty()) {
             return fornecedorRepository.findByNomeContaining(nome);
         } else {
             return fornecedorRepository.findByCnpjCpfContaining(cnpjCpf);
         }
-    }
+    }   
 
     public void deleteFornecedor(String cnpjCpf) throws FornecedorNotFoundException {
         Optional<Fornecedor> fornecedor = fornecedorRepository.findByCnpjCpf(cnpjCpf);
