@@ -23,11 +23,49 @@ public class EmpresaService {
     @Autowired
     private EmpresaFornecedorRepository empresaFornecedorRepository;
 
+    public static boolean validarCNPJ(String cnpj) {
+        if (cnpj == null) return false;
+
+        // Remove caracteres não numéricos
+        cnpj = cnpj.replaceAll("[^0-9]", "");
+
+        // Verifica se o CNPJ tem 14 dígitos e não é uma sequência repetida
+        if (cnpj.length() != 14 || cnpj.matches("(\\d)\\1{13}")) return false;
+
+        int soma = 0, resto;
+        int[] multiplicadores1 = {5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+        int[] multiplicadores2 = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+
+        // Cálculo do primeiro dígito verificador
+        for (int i = 0; i < 12; i++) {
+            soma += (cnpj.charAt(i) - '0') * multiplicadores1[i];
+        }
+        resto = soma % 11;
+        int digito1 = (resto < 2) ? 0 : 11 - resto;
+        if (digito1 != Character.getNumericValue(cnpj.charAt(12))) return false;
+
+        // Cálculo do segundo dígito verificador
+        soma = 0;
+        for (int i = 0; i < 13; i++) {
+            soma += (cnpj.charAt(i) - '0') * multiplicadores2[i];
+        }
+        resto = soma % 11;
+        int digito2 = (resto < 2) ? 0 : 11 - resto;
+
+        return digito2 == Character.getNumericValue(cnpj.charAt(13));
+    }
+
+
     // metodo para criação da empresa
     public Empresa createEmpresa(Empresa empresa) throws Exception {
         if (empresaRepository.findByCnpj(empresa.getCnpj()).isPresent()) {
             throw new Exception("Empresa já cadastrada com esse CNPJ.");
         }
+
+        if (empresa.getCnpj().length() == 14 && !validarCNPJ(empresa.getCnpj())) {
+            throw new Exception("CNPJ inválido.");
+        }
+
         return empresaRepository.save(empresa);  // Salva a empresa no banco de dados
     }
 
