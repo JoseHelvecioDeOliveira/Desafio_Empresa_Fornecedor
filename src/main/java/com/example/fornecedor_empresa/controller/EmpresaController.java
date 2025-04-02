@@ -58,6 +58,14 @@ public class EmpresaController {
         }
     }
 
+    @GetMapping("/com-fornecedores")
+    public ResponseEntity<List<Empresa>> getEmpresasComFornecedores() {
+        List<Empresa> empresas = empresaService.buscarEmpresasComFornecedores();
+        return ResponseEntity.ok(empresas);
+    }
+
+
+
     // Deletar empresa por CNPJ
     @DeleteMapping("/{cnpj}")
     public ResponseEntity<Void> deleteEmpresa(@PathVariable String cnpj) {

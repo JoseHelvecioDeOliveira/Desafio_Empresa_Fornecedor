@@ -1,5 +1,9 @@
 package com.example.fornecedor_empresa.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -26,6 +30,8 @@ public class Fornecedor {
     private LocalDate dataNascimento;
 
     @ManyToMany(mappedBy = "fornecedores")
+    @JsonIgnore
+
     private List<Empresa> empresas;
 
     // Getters e Setters

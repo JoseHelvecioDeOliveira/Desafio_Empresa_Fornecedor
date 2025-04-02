@@ -97,14 +97,11 @@ public class FornecedorService {
             throw new Exception("Fornecedor já cadastrado com esse CNPJ/CPF.");
         }
 
-        if (fornecedor.getCnpjCpf().length() == 11 && !validarCPF(fornecedor.getCnpjCpf())) {
-            System.out.println("CPF inválido: " + fornecedor.getCnpjCpf()); // Log para depuração
-            throw new Exception("CPF inválido.");
+        // Validação de CPF/CNPJ
+        if (!CnpjCpfValidator.isValid(fornecedor.getCnpjCpf())) {
+            throw new Exception("CNPJ/CPF inválido: " + fornecedor.getCnpjCpf());
         }
 
-        if (fornecedor.getCnpjCpf().length() == 14 && !validarCNPJ(fornecedor.getCnpjCpf())) {
-            throw new Exception("CNPJ inválido.");
-        }
 
         // Validação: Verifica se o CEP é válido
         if (!cepService.validarCep(fornecedor.getCep())) {

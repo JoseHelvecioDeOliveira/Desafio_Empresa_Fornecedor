@@ -1,5 +1,9 @@
 package com.example.fornecedor_empresa.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,6 +19,11 @@ public class Empresa {
     private String cep;
 
     @ManyToMany
+    @JoinTable(
+            name = "empresa_fornecedor",
+            joinColumns = @JoinColumn(name = "empresa_id"),
+            inverseJoinColumns = @JoinColumn(name = "fornecedor_id")
+    )
     private List<Fornecedor> fornecedores;
     
     // Getters e Setters

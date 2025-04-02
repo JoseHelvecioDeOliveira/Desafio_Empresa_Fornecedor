@@ -62,9 +62,11 @@ public class EmpresaService {
             throw new Exception("Empresa já cadastrada com esse CNPJ.");
         }
 
-        if (empresa.getCnpj().length() == 14 && !validarCNPJ(empresa.getCnpj())) {
-            throw new Exception("CNPJ inválido.");
+        // Validação de CPF/CNPJ
+        if (!CnpjCpfValidator.isValid(empresa.getCnpj())) {
+            throw new Exception("CNPJ/CPF inválido: " + empresa.getCnpj());
         }
+
 
         return empresaRepository.save(empresa);  // Salva a empresa no banco de dados
     }
@@ -96,6 +98,12 @@ public class EmpresaService {
             return empresaRepository.findAll(); // Retorna todas as empresas se nenhum filtro for passado
         }
     }
+
+    public List<Empresa> buscarEmpresasComFornecedores() {
+        return empresaRepository.findAllWithFornecedores();
+    }
+
+
 
 
     // metodo para buscar empresa por CNPJ
