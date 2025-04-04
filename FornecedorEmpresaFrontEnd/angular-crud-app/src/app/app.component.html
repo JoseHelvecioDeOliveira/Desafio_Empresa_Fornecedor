@@ -1,9 +1,17 @@
 <div class="pagina-container">
   <header class="cabecalho">
-    <h1>Gestão de Empresas e Fornecedores</h1>
+    <h1>Módulo de Gestão de Empresas e Fornecedores</h1>
   </header>
 
   <main class="crud-container">
+
+    <!-- Campo de busca -->
+<div class="busca-container">
+  <input type="text" [(ngModel)]="buscaTermo" placeholder="Buscar por CNPJ" class="busca-input" />
+  <button class="btn busca-btn" (click)="buscarEmpresas()">
+    🔍
+  </button>
+</div>
     
     <!-- Seção Empresas -->
     <section class="section-empresas">
@@ -86,6 +94,14 @@
     </div>
   </div>
     <hr />
+
+<!-- Campo de busca -->
+<div class="busca-container">
+  <input type="text" [(ngModel)]="buscaTermo" placeholder="Buscar por nome ou CPF/CNPJ..." class="busca-input" />
+  <button class="btn busca-btn" (click)="buscarFornecedores()">
+    🔍
+  </button>
+</div>
 
     <!-- Seção Fornecedores -->
     <section class="section-fornecedores">

@@ -4,24 +4,56 @@ import { Observable } from 'rxjs';
 import { Fornecedor } from '../models/fornecedor.model';
 import { format } from 'date-fns';
 import { parse } from 'date-fns';
+import { catchError, switchMap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FornecedorService {
   private readonly apiUrl = 'http://localhost:8080/api/fornecedores';
+  private readonly viaCepUrl = 'https://viacep.com.br/ws';
 
   private http = inject(HttpClient); // Injeção moderna
 
   createFornecedor(fornecedor: Fornecedor): Observable<Fornecedor> {
-    console.log(fornecedor.dataNascimento)
-    const fornecedorFormatado = {
-      ...fornecedor,
-      dataNascimento: fornecedor.dataNascimento // Converte para formato aceito pelo backend
-    };
+    console.log(fornecedor.dataNascimento);
 
-    return this.http.post<Fornecedor>(this.apiUrl, fornecedorFormatado);
+    return this.http.get<any>(`${this.viaCepUrl}/${fornecedor.cep}/json/`).pipe(
+      switchMap((response) => {
+        if (response.uf === 'PR') {
+          const idade = this.calcularIdade(fornecedor.dataNascimento || '');
+          if (idade < 18) {
+            return throwError(() => new Error('Fornecedor do PR deve ser maior de idade.'));
+          }
+        }
+        const fornecedorFormatado = {
+          ...fornecedor,
+          dataNascimento: fornecedor.dataNascimento,
+        };
+
+        return this.http.post<Fornecedor>(this.apiUrl, fornecedorFormatado);
+      }),
+      catchError((error) => {
+        console.error('Erro ao criar fornecedor:', error);
+        return throwError(() => error);
+      })
+    );
   }
+
+  private calcularIdade(dataNascimento: string): number {
+    const nascimento = new Date(dataNascimento);
+    const hoje = new Date();
+    let idade = hoje.getFullYear() - nascimento.getFullYear();
+    const mesDiff = hoje.getMonth() - nascimento.getMonth();
+    
+    if (mesDiff < 0 || (mesDiff === 0 && hoje.getDate() < nascimento.getDate())) {
+      idade--;
+    }
+    
+    return idade;
+  }
+
 
   getFornecedores(): Observable<Fornecedor[]> {
     return this.http.get<Fornecedor[]>(this.apiUrl);
@@ -44,13 +76,33 @@ export class FornecedorService {
   }
 
   updateFornecedor(cnpjCpf: string, fornecedor: Fornecedor): Observable<Fornecedor> {
-    const fornecedorFormatado = {
-      ...fornecedor,
-      dataNascimento: fornecedor.dataNascimento
-    };
-
-    return this.http.put<Fornecedor>(`${this.apiUrl}/${cnpjCpf}`, fornecedorFormatado);
+    if (!fornecedor.dataNascimento) {
+      return throwError(() => new Error('Data de nascimento é obrigatória.'));
+    }
+  
+    return this.http.get<any>(`${this.viaCepUrl}/${fornecedor.cep}/json/`).pipe(
+      switchMap((response) => {
+        if (response.uf === 'PR') {
+          const idade = this.calcularIdade(fornecedor.dataNascimento || '');
+          if (idade < 18) {
+            return throwError(() => new Error('Fornecedor do PR deve ser maior de idade.'));
+          }
+        }
+  
+        const fornecedorFormatado = {
+          ...fornecedor,
+          dataNascimento: fornecedor.dataNascimento
+        };
+  
+        return this.http.put<Fornecedor>(`${this.apiUrl}/${cnpjCpf}`, fornecedorFormatado);
+      }),
+      catchError((error) => {
+        console.error('Erro ao atualizar fornecedor:', error);
+        return throwError(() => error);
+      })
+    );
   }
+  
 
   deleteFornecedor(cnpjCpf: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${cnpjCpf}`);

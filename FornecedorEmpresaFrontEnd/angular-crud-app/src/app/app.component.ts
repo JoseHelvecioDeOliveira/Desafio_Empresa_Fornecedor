@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 export class AppComponent implements OnInit {
   empresas: any[] = [];
   fornecedores: any[] = [];
+  buscaTermo: string = '';
 
   novaEmpresa = { 
     nomeFantasia: '',
@@ -90,6 +91,7 @@ export class AppComponent implements OnInit {
     });
 }
 
+
   // Buscar fornecedores
   getFornecedores() {
     this.fornecedorService.getFornecedores().subscribe((data) => {
@@ -139,4 +141,37 @@ export class AppComponent implements OnInit {
       this.getFornecedores();
     });
   }
+
+  buscarFornecedores(): void {
+    const termo = this.buscaTermo.trim();
+    const nome = isNaN(Number(termo)) ? termo : undefined;
+    const cnpjCpf = !isNaN(Number(termo)) ? termo : undefined;
+
+    this.fornecedorService.searchFornecedores(nome, cnpjCpf).subscribe({
+      next: (resultado) => {
+        this.fornecedores = resultado;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar fornecedores:', err);
+        this.fornecedores = []; // Limpa lista se erro
+      }
+    });
+  }
+
+  buscarEmpresas(): void {
+    const termo = this.buscaTermo.trim();
+    const nomeFantasia = isNaN(Number(termo)) ? termo : undefined;
+    const cnpj = !isNaN(Number(termo)) ? termo : undefined;
+  
+    this.empresaService.searchEmpresas(nomeFantasia, cnpj).subscribe({
+      next: (resultado) => {
+        this.empresas = resultado;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar empresas:', err);
+        this.empresas = []; // Limpa lista se erro
+      }
+    });
+  }
+
 }
