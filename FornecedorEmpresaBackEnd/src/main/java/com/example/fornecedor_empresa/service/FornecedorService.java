@@ -181,8 +181,9 @@ public class FornecedorService {
             Fornecedor fornecedor = fornecedorExistente.get();
             fornecedor.setNome(fornecedorAtualizado.getNome());
             fornecedor.setEmail(fornecedorAtualizado.getEmail());
-            fornecedor.setCnpjCpf(fornecedorAtualizado.getCnpjCpf()); // Se necessário, você pode validar o CNPJ/CPF
+            fornecedor.setCnpjCpf(fornecedorAtualizado.getCnpjCpf());
             fornecedor.setCep(fornecedorAtualizado.getCep());
+            fornecedor.setDataNascimento(fornecedorAtualizado.getDataNascimento());
 
             // Salva as alterações
             return fornecedorRepository.save(fornecedor);

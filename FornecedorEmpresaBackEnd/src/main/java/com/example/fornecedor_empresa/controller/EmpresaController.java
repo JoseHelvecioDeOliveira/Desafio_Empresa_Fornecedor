@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/empresas")
+@CrossOrigin(origins = "http://localhost:4200")
 public class EmpresaController {
 
     @Autowired
@@ -76,6 +77,7 @@ public class EmpresaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Retorna 404 se empresa não for encontrada
         }
     }
+
 
     // Atualizar empresa
     @PutMapping("/{cnpj}")
