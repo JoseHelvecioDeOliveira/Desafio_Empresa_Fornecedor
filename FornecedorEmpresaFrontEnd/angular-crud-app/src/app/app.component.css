@@ -1,0 +1,192 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+.pagina-container {
+  max-width: 1800px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.cabecalho {
+  text-align: center;
+  background-color: #007bff;
+  color: white;
+  padding: 15px;
+  border-radius: 10px 10px 0 0;
+}
+
+h1, h2, h3 {
+  text-align: center;
+  color: #333;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.table th {
+  background-color: #007bff;
+  color: white;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 500px;
+  margin: auto;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.btn {
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.btn.edit {
+  background-color: #ffc107;
+  color: white;
+}
+
+.btn.delete {
+  background-color: #dc3545;
+  color: white;
+  margin-left: 10px;
+
+}
+
+.btn.add {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+hr {
+  margin: 30px 0;
+  border: 0;
+  height: 2px;
+  background: #007bff;
+}
+
+/* Fundo escuro semi-transparente */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6); /* Fundo escuro para destacar o modal */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Para garantir que fique acima de tudo */
+}
+
+/* Card flutuante do modal */
+.modal-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.35);
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Botão de fechar (X) */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #444;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+/* Formatação dos campos do formulário */
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  padding: 12px;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 100%;
+}
+
+/* Botão de salvar */
+.btn.save {
+  background: #28a745;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn.save:hover {
+  background: #218838;
+}
+
+/* Animação de entrada do modal */
+@keyframes fadeIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

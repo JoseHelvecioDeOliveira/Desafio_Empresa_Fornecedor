@@ -1,0 +1,179 @@
+<div class="pagina-container">
+  <header class="cabecalho">
+    <h1>Gestão de Empresas e Fornecedores</h1>
+  </header>
+
+  <main class="crud-container">
+    
+    <!-- Seção Empresas -->
+    <section class="section-empresas">
+      <h2>Empresas</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome Fantasia</th>
+            <th>CNPJ</th>
+            <th>CEP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let empresa of empresas">
+            <td>{{ empresa.id }}</td>
+            <td>{{ empresa.nomeFantasia }}</td>
+            <td>{{ empresa.cnpj }}</td>
+            <td>{{ empresa.cep }}</td>
+            <td>
+              <button class="btn edit" (click)="editEmpresa(empresa)">✏️ </button>
+              <button class="btn delete" (click)="deleteEmpresa(empresa.cnpj)">🗑️ </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Formulário para adicionar nova Empresa -->
+      <h3>Adicionar Empresa</h3>
+      <form (ngSubmit)="addEmpresa()" class="form">
+        <input [(ngModel)]="novaEmpresa.nomeFantasia" name="nomeFantasia" placeholder="Nome Fantasia" required />
+        <input [(ngModel)]="novaEmpresa.cnpj" name="cnpj" placeholder="CNPJ (Digite apenas números)" required pattern="\d{14}" title="Digite um CNPJ válido (14 números)" />
+        <input [(ngModel)]="novaEmpresa.cep" name="cep" placeholder="CEP" required />
+        <button type="submit" class="btn add">➕     Adicionar Empresa</button>
+      </form>
+    </section>
+
+     <!-- Modal de Edição para Empresa -->
+  <div *ngIf="empresaSelecionada" class="modal-overlay">
+    <div class="modal-card">
+      <span class="close-btn" (click)="fecharModalEmpresa()">&times;</span>
+      <h2>Editar Empresa</h2>
+      <form (ngSubmit)="salvarEdicaoEmpresa()">
+        <div class="form-group">
+          <label for="nomeFantasia">Nome Fantasia</label>
+          <input
+            [(ngModel)]="empresaSelecionada.nomeFantasia"
+            name="nomeFantasia"
+            id="nomeFantasia"
+            placeholder="Nome Fantasia"
+            required
+          />
+        </div>
+  
+        <div class="form-group">
+          <label for="cnpj">CNPJ</label>
+          <input
+            [(ngModel)]="empresaSelecionada.cnpj"
+            name="cnpj"
+            id="cnpj"
+            placeholder="CNPJ(Digite apenas números)"
+            required
+            disabled
+          />
+        </div>
+  
+        <div class="form-group">
+          <label for="cep">CEP</label>
+          <input
+            [(ngModel)]="empresaSelecionada.cep"
+            name="cep"
+            id="cep"
+            placeholder="CEP"
+            required
+          />
+        </div>
+  
+        <button type="submit" class="btn save">💾 Salvar</button>
+      </form>
+    </div>
+  </div>
+    <hr />
+
+    <!-- Seção Fornecedores -->
+    <section class="section-fornecedores">
+      <h2>Fornecedores</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CPF/CNPJ</th>
+            <th>CEP</th>
+            <th>E-mail</th>
+            <th>RG</th>
+            <th>Data de Nascimento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fornecedor of fornecedores">
+            <td>{{ fornecedor.id }}</td>
+            <td>{{ fornecedor.nome }}</td>
+            <td>{{ fornecedor.cnpjCpf }}</td>
+            <td>{{ fornecedor.cep }}</td>
+            <td>{{ fornecedor.email }}</td>
+            <td>{{ fornecedor.rg }}</td>
+            <td>{{ fornecedor.dataNascimento }}</td>
+            <td>
+              <button class="btn edit" (click)="editFornecedor(fornecedor)">✏️ </button>
+              <button class="btn delete" (click)="deleteFornecedor(fornecedor.cnpjCpf)">🗑️ </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Formulário para adicionar novo Fornecedor -->
+      <h3>Adicionar Fornecedor</h3>
+      <form (ngSubmit)="addFornecedor()" class="form">
+        <input [(ngModel)]="novoFornecedor.nome" name="nome" placeholder="Nome" required />
+        <input [(ngModel)]="novoFornecedor.cnpjCpf" name="cnpjCpf" placeholder="CPF/CNPJ (Digite apenas números)" required />
+        <input [(ngModel)]="novoFornecedor.email" name="email" placeholder="E-mail" required />
+        <input [(ngModel)]="novoFornecedor.rg" name="rg" placeholder="RG" required />
+        <input [(ngModel)]="novoFornecedor.cep" name="cep" placeholder="CEP" required />
+        <input [(ngModel)]="novoFornecedor.dataNascimento" name="dataNascimento"  type="date"/>
+        <button type="submit" class="btn add">➕     Adicionar Fornecedor</button>
+      </form>      
+    </section>
+  
+<!-- Modal de Edição -->
+<div *ngIf="fornecedorSelecionado" class="modal-overlay">
+  <div class="modal-card">
+    <span class="close-btn" (click)="fecharModalFornecedor()">&times;</span>
+    <h2>Editar Fornecedor</h2>
+    
+    <form (ngSubmit)="salvarEdicaoFornecedor()">
+      <div class="form-group">
+        <label>Nome</label>
+        <input [(ngModel)]="fornecedorSelecionado.nome" name="nome" placeholder="Nome" required />
+      </div>
+
+      <div class="form-group">
+        <label>CPF/CNPJ</label>
+        <input [(ngModel)]="fornecedorSelecionado.cnpjCpf" name="cnpjCpf" placeholder="CPF/CNPJ(Digite apenas números)" required disabled />
+      </div>
+
+      <div class="form-group">
+        <label>E-mail</label>
+        <input [(ngModel)]="fornecedorSelecionado.email" name="email" placeholder="E-mail" required />
+      </div>
+
+      <div class="form-group">
+        <label>RG</label>
+        <input [(ngModel)]="fornecedorSelecionado.rg" name="rg" placeholder="RG" required />
+      </div>
+
+      <div class="form-group">
+        <label>CEP</label>
+        <input [(ngModel)]="fornecedorSelecionado.cep" name="cep" placeholder="CEP" required />
+      </div>
+
+      <div class="form-group">
+        <label>Data de Nascimento</label>
+        <input [(ngModel)]="fornecedorSelecionado.dataNascimento" name="dataNascimento" type="date"  required />
+      </div>
+
+      <button type="submit" class="btn save">💾 Salvar</button>
+    </form>
+  </div>
+</div>
+
+
+  </main>
+</div>

@@ -1,0 +1,40 @@
+<div class="pagina-container">
+  <header class="cabecalho">
+    <h1>Aplicação CRUD</h1>
+  </header>
+
+  <main class="crud-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Descrição</th>
+          <th>fato</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items">
+          <td>{{ item.id }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.description }}</td>
+          <td>
+            <button (click)="editItem(item)">Editar</button>
+            <button (click)="deleteItem(item.id)">Excluir</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <form (ngSubmit)="addItem()">
+      <input [(ngModel)]="newItem.name" name="name" placeholder="Nome" required />
+      <input
+        [(ngModel)]="newItem.description"
+        name="description"
+        placeholder="Descrição"
+        required
+      />
+      <button type="submit">Adicionar Item</button>
+    </form>
+  </main>
+</div>
